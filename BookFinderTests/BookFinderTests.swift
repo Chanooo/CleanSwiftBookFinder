@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import bookfinder
+@testable import BookFinder
 
 class BookFinderTests: XCTestCase {
 

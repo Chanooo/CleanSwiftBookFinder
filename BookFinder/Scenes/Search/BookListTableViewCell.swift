@@ -2,7 +2,7 @@
 //  BookListTableViewCell.swift
 //  BookFinder
 //
-//  Created by 18101004 on 2021/09/27.
+//  Created by CNOO on 2021/09/27.
 //
 
 import Foundation
@@ -15,6 +15,14 @@ class BookListTableViewCell: UITableViewCell {
     @IBOutlet weak var bookAuthorLabel: UILabel!
     @IBOutlet weak var bookDateLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        bookImgeView.layer.masksToBounds = true
+        bookImgeView.layer.cornerRadius = 16
+        bookImgeView.layer.borderWidth = 1
+        bookImgeView.layer.borderColor = UIColor.secondaryLabel.cgColor
+    }
+    
     func bindData(data: BookList.FetchBooks.ViewModel.DisplayedBook) {
         bookImgeView.setImage(from: data.imageUrl)
         bookTitleLabel.text = data.title
@@ -22,4 +30,8 @@ class BookListTableViewCell: UITableViewCell {
         bookDateLabel.text = data.date
     }
     
+}
+
+class FetchingCell: UITableViewCell {
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
 }

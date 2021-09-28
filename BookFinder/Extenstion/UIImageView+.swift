@@ -2,7 +2,7 @@
 //  UIImageView+.swift
 //  BookFinder
 //
-//  Created by 18101004 on 2021/09/28.
+//  Created by CNOO on 2021/09/28.
 //
 
 import Foundation
@@ -12,6 +12,13 @@ extension UIImageView {
     
     func setImage(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
         contentMode = mode
+        
+        // initial image
+        DispatchQueue.main.async {
+            if let img = UIImage(systemName: "book") {
+                self.image = img
+            }
+        }
         
         // Check Image Caching
         let cachingManager = ImageCachingManager.shared
