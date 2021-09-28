@@ -14,18 +14,33 @@ import UIKit
 
 enum BookList
 {
-  // MARK: Use cases
-  
-  enum Something
-  {
-    struct Request
+    // MARK: Use cases
+    
+    enum FetchBooks
     {
+        struct Request
+        {
+            var queryText: String
+            var startIndex: Int
+        }
+        struct Response: Codable
+        {
+            var kind: String
+            var totalItems: Int
+            var items: [Book]?
+        }
+        struct ViewModel
+        {
+            struct DisplayedBook {
+                var id: String
+                var imageUrl: String
+                var title: String
+                var author: String
+                var date: String
+            }
+            
+            var displayedBooks: [DisplayedBook]
+            var totalItemCnt: Int
+        }
     }
-    struct Response
-    {
-    }
-    struct ViewModel
-    {
-    }
-  }
 }

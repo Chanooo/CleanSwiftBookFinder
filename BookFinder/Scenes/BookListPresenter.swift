@@ -14,18 +14,35 @@ import UIKit
 
 protocol BookListPresentationLogic
 {
-  func presentSomething(response: BookList.Something.Response)
+    func presentFetchedBooks(response: BookList.FetchBooks.Response)
 }
 
 class BookListPresenter: BookListPresentationLogic
 {
-  weak var viewController: BookListDisplayLogic?
-  
-  // MARK: Do something
-  
-  func presentSomething(response: BookList.Something.Response)
-  {
-    let viewModel = BookList.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
-  }
+    weak var viewController: BookListDisplayLogic?
+    
+    // MARK: Do something
+    
+    func presentFetchedBooks(response: BookList.FetchBooks.Response)
+    {
+        var displayedBooks: [BookList.FetchBooks.ViewModel.DisplayedBook] = []
+        
+        response.items?.forEach {
+            let displayBook = BookList.FetchBooks.ViewModel
+                .DisplayedBook(id: $0.id,
+                               imageUrl: $0.volumeInfo?.imageLinks?.thumbnail ?? "",
+                               title: $0.volumeInfo?.title ?? "",
+                               author: $0.volumeInfo?.authors?.joined(separator: ", ") ?? "",
+                               date: $0.volumeInfo?.publishedDate ?? "")
+            
+            displayedBooks.append(displayBook)
+        }
+        
+        let viewModel = BookList.FetchBooks.ViewModel(
+            displayedBooks: displayedBooks,
+            totalItemCnt: response.totalItems
+        )
+        
+        viewController?.displayFetchedBooks(viewModel: viewModel)
+    }
 }

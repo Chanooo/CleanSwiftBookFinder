@@ -11,13 +11,14 @@
 //
 
 import UIKit
+import Combine
 
 protocol BookListDisplayLogic: AnyObject
 {
-    func displaySomething(viewModel: BookList.Something.ViewModel)
+    func displayFetchedBooks(viewModel: BookList.FetchBooks.ViewModel)
 }
 
-class BookListViewController: UIViewController, BookListDisplayLogic, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate
+class BookListViewController: UITableViewController, BookListDisplayLogic, UISearchBarDelegate
 {
     var interactor: BookListBusinessLogic?
     var router: (NSObjectProtocol & BookListRoutingLogic & BookListDataPassing)?
@@ -50,7 +51,39 @@ class BookListViewController: UIViewController, BookListDisplayLogic, UITableVie
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
+        
+        setupUI()
     }
+    
+    private var bag = Set<AnyCancellable>()
+    private func setupUI() {
+        
+        // Navigation
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        
+        // SEARCHBAR
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = true
+        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.returnKeyType = UIReturnKeyType.done
+        searchController.searchBar.placeholder = "ex) type words to search..."
+        navigationItem.searchController = searchController
+        
+        // Bind Searchbar
+        let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
+        
+        publisher
+            .map { $0.object as? UISearchTextField }
+            .map { $0?.text }
+            .compactMap{ $0 }
+            .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
+            .sink(receiveValue: fetchBooks)
+            .store(in: &bag)
+    }
+    
     
     // MARK: Routing
     
@@ -69,54 +102,38 @@ class BookListViewController: UIViewController, BookListDisplayLogic, UITableVie
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        setupUI()
+    }
+    
+    // MARK: - Fetch orders
+    var displayedBooks: [BookList.FetchBooks.ViewModel.DisplayedBook] = []
+    
+    func fetchBooks(queryText: String)
+    {
+        let request = BookList.FetchBooks.Request(queryText: queryText, startIndex: 0)
+        interactor?.fetchBooks(request: request)
+//        let request = ListOrders.FetchOrders.Request()
+//        interactor?.fetchOrders(request: request)
+    }
+    
+    func displayFetchedBooks(viewModel: BookList.FetchBooks.ViewModel)
+    {
+        tableView.headerView(forSection: 0)?.textLabel?.text = "results (\(viewModel.totalItemCnt))"
+        displayedBooks =  viewModel.displayedBooks
+        tableView.reloadData()
         
     }
     
-    // MARK: Do something
-    @IBOutlet weak var tableView: UITableView!
-    
-    private func setupUI() {
-        // SEARCHBAR
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = true
-        navigationItem.hidesSearchBarWhenScrolling = true
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.returnKeyType = UIReturnKeyType.search
-        searchController.searchBar.placeholder = "ex) tutorials of Swift..."
-        navigationItem.searchController = searchController
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
-            
-        
-        tableView.delegate = self
-        tableView.dataSource = self
+    // MARK: - Table view data source
+    override func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        displayedBooks.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int { 1 }
-
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BookListTableViewCell", for: indexPath) as! BookListTableViewCell
-
+        cell.bindData(data: displayedBooks[indexPath.row])
         return cell
     }
-    
-    func doSomething()
-    {
-        let request = BookList.Something.Request()
-        interactor?.doSomething(request: request)
-    }
-    
-    func displaySomething(viewModel: BookList.Something.ViewModel)
-    {
-        //nameTextField.text = viewModel.name
-    }
+   
 }

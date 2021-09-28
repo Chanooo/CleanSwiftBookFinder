@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		454410EC27033BD9003B8C32 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454410EB27033BD9003B8C32 /* UIImageView+.swift */; };
+		454410EE27033D2D003B8C32 /* ImageCachingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454410ED27033D2D003B8C32 /* ImageCachingManager.swift */; };
+		454410F227034875003B8C32 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454410F127034875003B8C32 /* String+.swift */; };
+		454410F4270359BD003B8C32 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454410F3270359BD003B8C32 /* UIImage+.swift */; };
 		45566A0A2701C9A90034B0AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45566A092701C9A90034B0AA /* AppDelegate.swift */; };
 		45566A0C2701C9A90034B0AA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45566A0B2701C9A90034B0AA /* SceneDelegate.swift */; };
 		45566A112701C9A90034B0AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45566A0F2701C9A90034B0AA /* Main.storyboard */; };
@@ -46,6 +50,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		454410EB27033BD9003B8C32 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		454410ED27033D2D003B8C32 /* ImageCachingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCachingManager.swift; sourceTree = "<group>"; };
+		454410F127034875003B8C32 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		454410F3270359BD003B8C32 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		45566A062701C9A90034B0AA /* BookFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45566A092701C9A90034B0AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		45566A0B2701C9A90034B0AA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +102,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		454410EA27033BB8003B8C32 /* Extenstion */ = {
+			isa = PBXGroup;
+			children = (
+				454410EB27033BD9003B8C32 /* UIImageView+.swift */,
+				454410F127034875003B8C32 /* String+.swift */,
+				454410F3270359BD003B8C32 /* UIImage+.swift */,
+			);
+			path = Extenstion;
+			sourceTree = "<group>";
+		};
 		455669FD2701C9A90034B0AA = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +135,7 @@
 		45566A082701C9A90034B0AA /* BookFinder */ = {
 			isa = PBXGroup;
 			children = (
+				454410EA27033BB8003B8C32 /* Extenstion */,
 				45566A3C2701CB210034B0AA /* Manager */,
 				45566A3E2701CB2B0034B0AA /* Service */,
 				45566A3F2701CB340034B0AA /* Workers */,
@@ -153,6 +172,7 @@
 		45566A3C2701CB210034B0AA /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				454410ED27033D2D003B8C32 /* ImageCachingManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -182,13 +202,13 @@
 		45566A412701CB400034B0AA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				45566A482701D0060034B0AA /* BookListPresenter.swift */,
-				45566A492701D0060034B0AA /* BookListWorker.swift */,
-				45566A4A2701D0060034B0AA /* BookListRouter.swift */,
-				45566A4B2701D0060034B0AA /* BookListModels.swift */,
+				45566A542701E49A0034B0AA /* BookListTableViewCell.swift */,
 				45566A4C2701D0060034B0AA /* BookListViewController.swift */,
 				45566A4D2701D0060034B0AA /* BookListInteractor.swift */,
-				45566A542701E49A0034B0AA /* BookListTableViewCell.swift */,
+				45566A492701D0060034B0AA /* BookListWorker.swift */,
+				45566A482701D0060034B0AA /* BookListPresenter.swift */,
+				45566A4B2701D0060034B0AA /* BookListModels.swift */,
+				45566A4A2701D0060034B0AA /* BookListRouter.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -273,7 +293,7 @@
 				};
 			};
 			buildConfigurationList = 45566A012701C9A90034B0AA /* Build configuration list for PBXProject "BookFinder" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -324,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				454410EC27033BD9003B8C32 /* UIImageView+.swift in Sources */,
 				45566A532701D0060034B0AA /* BookListInteractor.swift in Sources */,
 				45566A4E2701D0060034B0AA /* BookListPresenter.swift in Sources */,
 				45566A552701E49A0034B0AA /* BookListTableViewCell.swift in Sources */,
@@ -331,9 +352,12 @@
 				45566A142701C9A90034B0AA /* BookFinder.xcdatamodeld in Sources */,
 				45566A442701CBFB0034B0AA /* Book.swift in Sources */,
 				45566A0C2701C9A90034B0AA /* SceneDelegate.swift in Sources */,
+				454410EE27033D2D003B8C32 /* ImageCachingManager.swift in Sources */,
 				45566A512701D0060034B0AA /* BookListModels.swift in Sources */,
 				45566A4F2701D0060034B0AA /* BookListWorker.swift in Sources */,
 				45566A502701D0060034B0AA /* BookListRouter.swift in Sources */,
+				454410F4270359BD003B8C32 /* UIImage+.swift in Sources */,
+				454410F227034875003B8C32 /* String+.swift in Sources */,
 				45566A522701D0060034B0AA /* BookListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,7 +559,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -566,7 +590,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

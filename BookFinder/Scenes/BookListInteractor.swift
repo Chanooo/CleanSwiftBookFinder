@@ -14,28 +14,35 @@ import UIKit
 
 protocol BookListBusinessLogic
 {
-  func doSomething(request: BookList.Something.Request)
+    func fetchBooks(request: BookList.FetchBooks.Request)
 }
 
 protocol BookListDataStore
 {
-  //var name: String { get set }
+    var books: [Book]? { get }
 }
 
 class BookListInteractor: BookListBusinessLogic, BookListDataStore
 {
-  var presenter: BookListPresentationLogic?
-  var worker: BookListWorker?
-  //var name: String = ""
-  
-  // MARK: Do something
-  
-  func doSomething(request: BookList.Something.Request)
-  {
-    worker = BookListWorker()
-    worker?.doSomeWork()
+    var presenter: BookListPresentationLogic?
     
-    let response = BookList.Something.Response()
-    presenter?.presentSomething(response: response)
-  }
+    var bookListWorker = BookListWorker()
+    var books: [Book]?
+    
+    // MARK: fetch books
+    
+    func fetchBooks(request: BookList.FetchBooks.Request)
+    {
+        bookListWorker.fetchBooks(request: request) { result in
+            switch result {
+            case .success(let response):
+                print(response)
+                DispatchQueue.main.async {
+                    self.presenter?.presentFetchedBooks(response: response)
+                }
+            case .failure(let error):
+                debugPrint("🆘 \(error)")
+            }
+        }
+    }
 }

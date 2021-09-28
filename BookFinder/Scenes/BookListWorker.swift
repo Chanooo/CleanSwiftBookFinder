@@ -14,7 +14,47 @@ import UIKit
 
 class BookListWorker
 {
-  func doSomeWork()
-  {
-  }
+    private let baseUrl = "https://www.googleapis.com/books/v1"
+    
+    func fetchBooks(request: BookList.FetchBooks.Request, completionHandler:  @escaping (Result<BookList.FetchBooks.Response, Error>) -> Void)
+    {
+        let path = "/volumes"
+        var params: [String : Any] = [:]
+//        if request.queryText.count > 1 {
+//        }
+        params["q"] = request.queryText + "123"
+        params["startIndex"] = request.startIndex
+        
+        DispatchQueue.global(qos: .background).async {
+            let queryParams = params.map { k, v in "\(k)=\(v)" }.joined(separator: "&")
+
+            var fullPath = path.hasPrefix("http") ? path : self.baseUrl + path
+            
+            if !queryParams.isEmpty {
+                fullPath += "?" + queryParams
+            }
+
+            do {
+                if let encoded = fullPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                   let url = URL(string: encoded) {
+                    let json = try String(contentsOf: url, encoding: .utf8)
+                    print(json)
+                    let data = json.data(using: .utf8)!
+                    let response = try JSONDecoder().decode(BookList.FetchBooks.Response.self, from: data)
+                    completionHandler(Result.success(response))
+                } else {
+                    print("🆘 url is nil")
+                }
+            } catch {
+                debugPrint("🆘: \(error)")
+                completionHandler(Result.failure(error))
+            }
+        }
+        
+    }
+    
 }
+
+
+
+

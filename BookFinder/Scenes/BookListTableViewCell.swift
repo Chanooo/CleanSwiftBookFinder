@@ -15,8 +15,11 @@ class BookListTableViewCell: UITableViewCell {
     @IBOutlet weak var bookAuthorLabel: UILabel!
     @IBOutlet weak var bookDateLabel: UILabel!
     
-    func bindData(book: Book) {
-        
+    func bindData(data: BookList.FetchBooks.ViewModel.DisplayedBook) {
+        bookImgeView.setImage(from: data.imageUrl)
+        bookTitleLabel.text = data.title
+        bookAuthorLabel.text = data.author
+        bookDateLabel.text = data.date
     }
     
 }
