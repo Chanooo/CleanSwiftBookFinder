@@ -20,13 +20,13 @@ This gif file is a short preview of UITest:
 # Project Skills
 Learn more about the **CleanSwiftBookFinder** project, licensing, support etc.
 
-## Architecture
+### Architecture
 - VIP Pattern (Uncle Bob's Clean Swift)
-## Programming Language
+### Programming Language
 - Swift 5.0
-## AsyncModule
+### Async Module
 - Combine
-## Unit Test / UI Test
+### Unit Test / UI Test
 - XCTest
 
 
