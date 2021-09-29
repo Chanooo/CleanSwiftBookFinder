@@ -9,7 +9,7 @@
 If anyone has a Question, please ask me anytime.
 
 # UI Test Preview
-This mov file is a short preview of UITest:
+This gif file is a short preview of UITest:
 
 <table>
     <tr align="center" height="50px">
