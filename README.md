@@ -12,11 +12,8 @@ If anyone has a Question, please ask me anytime.
 This mov file is a short preview of UITest:
 
 <table>
-    <tr align="center" height="60px">
-        <!-- <td width="300px">Native</td> -->
-        <video width="400px" controls autoplay>
-            <source src="./assets/uitest.mov" type="video/mp4">
-        </video>
+    <tr align="center" height="50px">
+        <img src="./assets/uitest.gif"></img>
     </tr>
 </table>
 
