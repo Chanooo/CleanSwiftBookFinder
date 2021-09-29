@@ -39,5 +39,5 @@ iOS Developer CNOO, kcw9028@naver.com
 
 # License
 
-CNChart is available under the MIT license. See the LICENSE file for more info.
-See the [License](https://github.com/Chanooo/CNChart/blob/master/LICENSE). You are free to make changes and use this in either personal or commercial projects. Attribution is not required, but highly appreciated. A little "Thanks!" (or something to that affect) is always welcome. If you use **CNChart** in your app, please let me know!
+CleanSwiftBookFinder is available under the MIT license. See the LICENSE file for more info.
+See the [License](https://github.com/Chanooo/CleanSwiftBookFinder/blob/master/LICENSE). You are free to make changes and use this in either personal or commercial projects. Attribution is not required, but highly appreciated. A little "Thanks!" (or something to that affect) is always welcome. If you use **CleanSwiftBookFinder** in your app, please let me know!
