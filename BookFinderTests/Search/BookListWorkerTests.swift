@@ -15,40 +15,69 @@ import XCTest
 
 class BookListWorkerTests: XCTestCase
 {
-  // MARK: Subject under test
-  
-  var sut: BookListWorker!
-  
-  // MARK: Test lifecycle
-  
-  override func setUp()
-  {
-    super.setUp()
-    setupBookListWorker()
-  }
-  
-  override func tearDown()
-  {
-    super.tearDown()
-  }
-  
-  // MARK: Test setup
-  
-  func setupBookListWorker()
-  {
-    sut = BookListWorker()
-  }
-  
-  // MARK: Test doubles
-  
-  // MARK: Tests
-  
-  func testSomething()
-  {
-    // Given
+    // MARK: Subject under test
     
-    // When
+    var sut: BookListWorker!
     
-    // Then
-  }
+    // MARK: Test lifecycle
+    
+    override func setUp()
+    {
+        super.setUp()
+        setupBookListWorker()
+    }
+    
+    override func tearDown()
+    {
+        super.tearDown()
+    }
+    
+    // MARK: Test setup
+    
+    func setupBookListWorker()
+    {
+        sut = BookListWorker()
+    }
+    
+    // MARK: Test doubles
+    
+    class BookListBusinessLogicSpy: BookListBusinessLogic
+    {
+        var books: [Book]?
+        
+        // MARK: Method call expectations
+        
+        var fetchBooksCalled = false
+        
+        // MARK: Spied methods
+        
+        func fetchBooks(request: BookList.FetchBooks.Request) {
+            fetchBooksCalled = true
+        }
+    }
+    
+    // MARK: Tests
+    
+    func testFetchBooksShouldAskBookListInteractorToUpdateResponse()
+    {
+        // Given
+        let request = BookList.FetchBooks.Request(queryText: "Swift", startIndex: 0, maxResult: 10)
+
+        // When
+        var expResult: BookList.FetchBooks.Response?
+        let exp = expectation(description: "Wait for fetched books result")
+        sut.fetchBooks(request: request) { result in
+            switch result {
+            case .success(let res):
+                expResult = res
+            case .failure(_):
+                break
+            }
+            exp.fulfill()
+        }
+        
+        // Then
+        waitForExpectations(timeout: 10.0)
+        XCTAssertTrue(expResult?.items?.count ?? 0 > 0, "BookListWorker could not get a right response from google Books API")
+    }
 }

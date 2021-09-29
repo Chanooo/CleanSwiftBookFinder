@@ -19,12 +19,16 @@ protocol BookListDisplayLogic: AnyObject
     func displayError()
 }
 
-class BookListViewController: UITableViewController, BookListDisplayLogic, UISearchBarDelegate
+class BookListViewController: UITableViewController,
+                              BookListDisplayLogic,
+                              UISearchBarDelegate,
+                              UITextFieldDelegate
 {
     var interactor: BookListBusinessLogic?
     var router: (NSObjectProtocol & BookListRoutingLogic & BookListDataPassing)?
     
     // MARK: Variables
+    var searchController = UISearchController(searchResultsController: nil)
     private var bag = Set<AnyCancellable>()
     private var queryText = ""
     private var headerText = ""
@@ -72,17 +76,19 @@ class BookListViewController: UITableViewController, BookListDisplayLogic, UISea
     
     private func setupUI() {
         
-        // Navigation
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
-        
         // SEARCHBAR
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = true
-        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.searchBar.searchTextField.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.returnKeyType = UIReturnKeyType.done
         searchController.searchBar.placeholder = "ex) the name of book..."
+        searchController.searchBar.searchTextField.isAccessibilityElement = true
+        searchController.searchBar.searchTextField.accessibilityIdentifier = "searchBarTF"
+        
+        // Navigation
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesSearchBarWhenScrolling = true
         navigationItem.searchController = searchController
         
         // Bind Searchbar Text
@@ -108,12 +114,6 @@ class BookListViewController: UITableViewController, BookListDisplayLogic, UISea
                 self.tableView.reloadData()
             }).store(in: &bag)
         
-        
-        // Bind return key
-        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-            .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
-            .sink(receiveValue: {_ in searchController.isActive = false })
-            .store(in: &bag)
         
     }
     
@@ -185,6 +185,13 @@ class BookListViewController: UITableViewController, BookListDisplayLogic, UISea
         displayedBooks.removeAll()
         displayedBooks.append(BookList.FetchBooks.ViewModel.DisplayedBook(state: .error))
         tableView.reloadData()
+    }
+    
+    
+    // MARK: - TextField Delegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchController.isActive = false
+        return true
     }
     
     

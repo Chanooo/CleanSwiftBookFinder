@@ -39,6 +39,8 @@
 		9C5BB97B2703A39D00819BC6 /* BookListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5BB9772703A39D00819BC6 /* BookListInteractorTests.swift */; };
 		9C5BB97C2703A39D00819BC6 /* BookListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5BB9782703A39D00819BC6 /* BookListWorkerTests.swift */; };
 		9C5BB97D2703A39D00819BC6 /* BookListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5BB9792703A39D00819BC6 /* BookListPresenterTests.swift */; };
+		9C6B8D522703F1A600E05904 /* Seeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B8D512703F1A600E05904 /* Seeds.swift */; };
+		9C6B8D6027042D3300E05904 /* Print+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B8D5F27042D3300E05904 /* Print+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,8 @@
 		9C5BB9772703A39D00819BC6 /* BookListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListInteractorTests.swift; sourceTree = "<group>"; };
 		9C5BB9782703A39D00819BC6 /* BookListWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListWorkerTests.swift; sourceTree = "<group>"; };
 		9C5BB9792703A39D00819BC6 /* BookListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListPresenterTests.swift; sourceTree = "<group>"; };
+		9C6B8D512703F1A600E05904 /* Seeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seeds.swift; sourceTree = "<group>"; };
+		9C6B8D5F27042D3300E05904 /* Print+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Print+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,7 @@
 			children = (
 				454410EB27033BD9003B8C32 /* UIImageView+.swift */,
 				454410F3270359BD003B8C32 /* UIImage+.swift */,
+				9C6B8D5F27042D3300E05904 /* Print+.swift */,
 			);
 			path = Extenstion;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			children = (
 				9C5BB9752703A36800819BC6 /* Search */,
 				45566A232701C9B40034B0AA /* BookFinderTests.swift */,
+				9C6B8D512703F1A600E05904 /* Seeds.swift */,
 			);
 			path = BookFinderTests;
 			sourceTree = "<group>";
@@ -413,6 +419,7 @@
 				45566A502701D0060034B0AA /* BookListRouter.swift in Sources */,
 				9C4B9529270394BB00EC3EE1 /* BookDetailViewController.swift in Sources */,
 				454410F4270359BD003B8C32 /* UIImage+.swift in Sources */,
+				9C6B8D6027042D3300E05904 /* Print+.swift in Sources */,
 				45566A522701D0060034B0AA /* BookListViewController.swift in Sources */,
 				9C4B9525270394BB00EC3EE1 /* BookDetailPresenter.swift in Sources */,
 			);
@@ -424,6 +431,7 @@
 			files = (
 				45566A452701CBFB0034B0AA /* Book.swift in Sources */,
 				9C5BB97B2703A39D00819BC6 /* BookListInteractorTests.swift in Sources */,
+				9C6B8D522703F1A600E05904 /* Seeds.swift in Sources */,
 				9C5BB97C2703A39D00819BC6 /* BookListWorkerTests.swift in Sources */,
 				9C5BB97D2703A39D00819BC6 /* BookListPresenterTests.swift in Sources */,
 				9C5BB97A2703A39D00819BC6 /* BookListViewControllerTests.swift in Sources */,
@@ -663,7 +671,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2XKV67PR3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -675,7 +683,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bookfinder.app/bookfinder";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BookFinder.app/BookFinder";
 			};
 			name = Debug;
 		};
@@ -688,7 +696,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2XKV67PR3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -700,7 +708,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bookfinder.app/bookfinder";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BookFinder.app/BookFinder";
 			};
 			name = Release;
 		};
@@ -712,6 +720,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2XKV67PR3;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -720,10 +729,11 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cnoo.bookfinderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = bookfinder;
+				TEST_TARGET_NAME = BookFinder;
 			};
 			name = Debug;
 		};
@@ -735,6 +745,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2XKV67PR3;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -743,10 +754,11 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cnoo.bookfinderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = bookfinder;
+				TEST_TARGET_NAME = BookFinder;
 			};
 			name = Release;
 		};

@@ -28,13 +28,14 @@ class BookListPresenter: BookListPresentationLogic
     {
         var displayedBooks: [BookList.FetchBooks.ViewModel.DisplayedBook] = []
         
+        
         response.items?.forEach {
             let displayBook = BookList.FetchBooks.ViewModel
                 .DisplayedBook(imageUrl: $0.volumeInfo?.imageLinks?.thumbnail ?? "",
                                title: $0.volumeInfo?.title ?? "-",
                                author: $0.volumeInfo?.authors?.joined(separator: ", ") ?? "-",
                                date: $0.volumeInfo?.publishedDate ?? "-")
-            
+            print(displayBook)
             displayedBooks.append(displayBook)
         }
         
@@ -42,11 +43,14 @@ class BookListPresenter: BookListPresentationLogic
             displayedBooks: displayedBooks,
             totalItemCnt: response.totalItems
         )
-        
-        viewController?.displayFetchedBooks(viewModel: viewModel)
+        DispatchQueue.main.async {
+            self.viewController?.displayFetchedBooks(viewModel: viewModel)
+        }
     }
     
     func presentError() {
-        viewController?.displayError()
+        DispatchQueue.main.async {
+            self.viewController?.displayError()
+        }
     }
 }

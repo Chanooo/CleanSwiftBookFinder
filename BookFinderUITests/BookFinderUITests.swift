@@ -21,22 +21,38 @@ class BookFinderUITests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    // MARK: - APP UI Test
+    func testUI() throws {
+        // APP Launch
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        // Search words
+        let searchTextField = app.navigationBars.searchFields["searchBarTF"]
+        searchTextField.tap()
+        searchTextField.typeText("Swift")
+        sleep(1)
+        
+        // tap cell
+        app.otherElements["PopoverDismissRegion"].tap()
+        app.tables.cells.containing(.staticText, identifier:"Alexander Norman Jeffares").staticTexts["Swift"].tap()
+        sleep(2)
+        app.navigationBars["Swift"].buttons["Search Books"].tap()
+        
+        //  Scroll Bottom
+        let tablesQuery = app.tables
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Swift at Moor Park"]/*[[".cells.staticTexts[\"Swift at Moor Park\"]",".staticTexts[\"Swift at Moor Park\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeUp()
+                        
+        XCTAssertTrue(true, "Error")
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
-    }
+    // MARK: - Measure Performance (Not USE)
+//    func testLaunchPerformance() throws {
+//        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+//            // This measures how long it takes to launch your application.
+//            measure(metrics: [XCTApplicationLaunchMetric()]) {
+//                XCUIApplication().launch()
+//            }
+//        }
+//    }
 }

@@ -15,78 +15,130 @@ import XCTest
 
 class BookListViewControllerTests: XCTestCase
 {
-  // MARK: Subject under test
-  
-  var sut: BookListViewController!
-  var window: UIWindow!
-  
-  // MARK: Test lifecycle
-  
-  override func setUp()
-  {
-    super.setUp()
-    window = UIWindow()
-    setupBookListViewController()
-  }
-  
-  override func tearDown()
-  {
-    window = nil
-    super.tearDown()
-  }
-  
-  // MARK: Test setup
-  
-  func setupBookListViewController()
-  {
-    let bundle = Bundle.main
-    let storyboard = UIStoryboard(name: "Main", bundle: bundle)
-    sut = storyboard.instantiateViewController(withIdentifier: "BookListViewController") as! BookListViewController
-  }
-  
-  func loadView()
-  {
-    window.addSubview(sut.view)
-    RunLoop.current.run(until: Date())
-  }
-  
-  // MARK: Test doubles
-  
-  class BookListBusinessLogicSpy: BookListBusinessLogic
-  {
-    var doSomethingCalled = false
+    // MARK: Subject under test
     
-    func doSomething(request: BookList.Something.Request)
+    var sut: BookListViewController!
+    var window: UIWindow!
+    
+    // MARK: Test lifecycle
+    
+    override func setUp()
     {
-      doSomethingCalled = true
+        super.setUp()
+        window = UIWindow()
+        setupBookListViewController()
     }
-  }
-  
-  // MARK: Tests
-  
-  func testShouldDoSomethingWhenViewIsLoaded()
-  {
-    // Given
-    let spy = BookListBusinessLogicSpy()
-    sut.interactor = spy
     
-    // When
-    loadView()
+    override func tearDown()
+    {
+        window = nil
+        super.tearDown()
+    }
     
-    // Then
-    XCTAssertTrue(spy.doSomethingCalled, "viewDidLoad() should ask the interactor to do something")
-  }
-  
-  func testDisplaySomething()
-  {
-    // Given
-    let viewModel = BookList.Something.ViewModel()
+    // MARK: Test setup
     
-    // When
-    loadView()
-    sut.displaySomething(viewModel: viewModel)
+    func setupBookListViewController()
+    {
+        let bundle = Bundle.main
+        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
+        sut = storyboard.instantiateViewController(withIdentifier: "BookListViewController") as? BookListViewController
+    }
     
-    // Then
-    //XCTAssertEqual(sut.nameTextField.text, "", "displaySomething(viewModel:) should update the name text field")
-  }
+    func loadView()
+    {
+        window.addSubview(sut.view)
+        RunLoop.current.run(until: Date())
+    }
+    
+    // MARK: Test doubles
+//
+//    class BookListBusinessLogicSpy: BookListBusinessLogic
+//    {
+//        var books: [Book]?
+//
+//        // MARK: Method call expectations
+//
+//        var fetchBooksCalled = false
+//
+//        // MARK: Spied methods
+//
+//        func fetchBooks(request: BookList.FetchBooks.Request) {
+//            fetchBooksCalled = true
+//        }
+//
+//    }
+    
+    
+    class TableViewSpy: UITableView
+    {
+        // MARK: Method call expectations
+        
+        var reloadDataCalled = false
+        
+        // MARK: Spied methods
+        
+        override func reloadData()
+        {
+            reloadDataCalled = true
+        }
+    }
+    
+    
+    func testShouldDisplayFetchedBooks()
+    {
+        // Given
+        let tableViewSpy = TableViewSpy()
+        sut.tableView = tableViewSpy
+        
+        // When
+        let displayedBook = [Seeds.Books.displayedBook]
+        let viewModel = BookList.FetchBooks.ViewModel(displayedBooks: displayedBook, totalItemCnt: 1)
+        sut.displayFetchedBooks(viewModel: viewModel)
+        
+        // Then
+        XCTAssert(tableViewSpy.reloadDataCalled, "Displaying fetched books should reload the table view")
+    }
+    
+    func testNumberOfSectionsInTableViewShouldAlwaysBeOne()
+    {
+        // Given
+        let tableView = sut.tableView
+        
+        // When
+        let numberOfSections = sut.numberOfSections(in: tableView!)
+        
+        // Then
+        XCTAssertEqual(numberOfSections, 1, "The number of table view sections should always be 1")
+    }
+    
+    func testNumberOfRowsInAnySectionShouldEqaulNumberOfBooksToDisplay()
+    {
+        // Given
+        let tableView = sut.tableView
+        let testDisplayedBooks = [Seeds.Books.displayedBook]
+        sut.displayedBooks = testDisplayedBooks
+        
+        // When
+        let numberOfRows = sut.tableView(tableView!, numberOfRowsInSection: 0)
+        
+        // Then
+        XCTAssertEqual(numberOfRows, testDisplayedBooks.count, "The number of table view rows should equal the number of books to display")
+    }
+    
+    func testShouldConfigureTableViewCellToDisplayOrder()
+    {
+        // Given
+        let tableView = sut.tableView
+        let testDisplayedBooks = [Seeds.Books.displayedBook]
+        sut.displayedBooks = testDisplayedBooks
+        
+        // When
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = sut.tableView(tableView!, cellForRowAt: indexPath) as! BookListTableViewCell
+        
+        // Then
+        XCTAssertEqual(cell.bookTitleLabel?.text, "Swift", "A properly configured table view cell should display the title of book")
+        XCTAssertEqual(cell.bookAuthorLabel?.text, "Alexander Norman Jeffares", "A properly configured table view cell should display the the author of book")
+        XCTAssertEqual(cell.bookDateLabel?.text, "1970", "A properly configured table view cell should display the date published")
+    }
 }

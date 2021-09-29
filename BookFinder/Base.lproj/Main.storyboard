@@ -12,7 +12,7 @@
         <!--Search Books-->
         <scene sceneID="WLG-CK-Jwr">
             <objects>
-                <tableViewController id="0jG-Vd-VoA" customClass="BookListViewController" customModule="BookFinder" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="BookListViewController" id="0jG-Vd-VoA" customClass="BookListViewController" customModule="BookFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="96" estimatedRowHeight="96" sectionHeaderHeight="28" sectionFooterHeight="28" id="H2L-3R-3rQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

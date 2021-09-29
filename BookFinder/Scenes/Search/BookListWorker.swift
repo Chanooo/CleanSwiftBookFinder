@@ -43,10 +43,10 @@ class BookListWorker
                     let response = try JSONDecoder().decode(BookList.FetchBooks.Response.self, from: data)
                     completionHandler(Result.success(response))
                 } else {
-                    print("🆘 url is nil")
+                    printError("url is nil")
                 }
             } catch {
-                debugPrint("🆘: \(error)")
+                printError(error.localizedDescription)
                 completionHandler(Result.failure(error))
             }
         }

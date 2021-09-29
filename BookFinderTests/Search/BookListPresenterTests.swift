@@ -15,55 +15,65 @@ import XCTest
 
 class BookListPresenterTests: XCTestCase
 {
-  // MARK: Subject under test
-  
-  var sut: BookListPresenter!
-  
-  // MARK: Test lifecycle
-  
-  override func setUp()
-  {
-    super.setUp()
-    setupBookListPresenter()
-  }
-  
-  override func tearDown()
-  {
-    super.tearDown()
-  }
-  
-  // MARK: Test setup
-  
-  func setupBookListPresenter()
-  {
-    sut = BookListPresenter()
-  }
-  
-  // MARK: Test doubles
-  
-  class BookListDisplayLogicSpy: BookListDisplayLogic
-  {
-    var displaySomethingCalled = false
+    // MARK: Subject under test
     
-    func displaySomething(viewModel: BookList.Something.ViewModel)
+    var sut: BookListPresenter!
+    
+    // MARK: Test lifecycle
+    
+    override func setUp()
     {
-      displaySomethingCalled = true
+        super.setUp()
+        setupBookListPresenter()
     }
-  }
-  
-  // MARK: Tests
-  
-  func testPresentSomething()
-  {
-    // Given
-    let spy = BookListDisplayLogicSpy()
-    sut.viewController = spy
-    let response = BookList.Something.Response()
     
-    // When
-    sut.presentSomething(response: response)
+    override func tearDown()
+    {
+        super.tearDown()
+    }
     
-    // Then
-    XCTAssertTrue(spy.displaySomethingCalled, "presentSomething(response:) should ask the view controller to display the result")
-  }
+    // MARK: Test setup
+    
+    func setupBookListPresenter()
+    {
+        sut = BookListPresenter()
+    }
+    
+    // MARK: Test doubles
+    
+    class BookListDisplayLogicSpy: BookListDisplayLogic
+    {
+        func displayFetchedBooks(viewModel: BookList.FetchBooks.ViewModel) {
+            displayFetchedBooksCalled = true
+        }
+        
+        func displayError() {
+            displayErrorCalled = true
+        }
+        
+        // MARK: Method call expectations
+        
+        var displayFetchedBooksCalled = false
+        var displayErrorCalled = false
+    }
+    
+    // MARK: Tests
+    
+    func testPresentSomething()
+    {
+        // Given
+        let spy = BookListDisplayLogicSpy()
+        sut.viewController = spy
+        let response = BookList.FetchBooks.Response(kind: "kind", totalItems: 1, items: [Seeds.Books.sampleBook])
+        
+        // When
+        sut.presentFetchedBooks(response: response)
+        sut.presentError()
+        
+        // Then
+        DispatchQueue.main.async { // display work should be on Main Thread
+            XCTAssertTrue(spy.displayErrorCalled, "presentFetchedBooks(response:) should ask the view controller to display the result")
+            XCTAssertTrue(spy.displayFetchedBooksCalled, "presentError() should ask the view controller to display the error result")
+        }
+    }
 }

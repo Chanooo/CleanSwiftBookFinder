@@ -15,55 +15,95 @@ import XCTest
 
 class BookListInteractorTests: XCTestCase
 {
-  // MARK: Subject under test
-  
-  var sut: BookListInteractor!
-  
-  // MARK: Test lifecycle
-  
-  override func setUp()
-  {
-    super.setUp()
-    setupBookListInteractor()
-  }
-  
-  override func tearDown()
-  {
-    super.tearDown()
-  }
-  
-  // MARK: Test setup
-  
-  func setupBookListInteractor()
-  {
-    sut = BookListInteractor()
-  }
-  
-  // MARK: Test doubles
-  
-  class BookListPresentationLogicSpy: BookListPresentationLogic
-  {
-    var presentSomethingCalled = false
+    // MARK: Subject under test
     
-    func presentSomething(response: BookList.Something.Response)
+    var sut: BookListInteractor!
+    
+    // MARK: Test lifecycle
+    
+    override func setUp()
     {
-      presentSomethingCalled = true
+        super.setUp()
+        setupBookListInteractor()
     }
-  }
-  
-  // MARK: Tests
-  
-  func testDoSomething()
-  {
-    // Given
-    let spy = BookListPresentationLogicSpy()
-    sut.presenter = spy
-    let request = BookList.Something.Request()
     
-    // When
-    sut.doSomething(request: request)
+    override func tearDown()
+    {
+        super.tearDown()
+    }
     
-    // Then
-    XCTAssertTrue(spy.presentSomethingCalled, "doSomething(request:) should ask the presenter to format the result")
-  }
+    // MARK: Test setup
+    
+    func setupBookListInteractor()
+    {
+        sut = BookListInteractor()
+    }
+    
+    // MARK: Test doubles
+    
+    class BookListPresentationLogicSpy: BookListPresentationLogic
+    {
+        // MARK: Spied methods
+        
+        func presentFetchedBooks(response: BookList.FetchBooks.Response) {
+            presentFetchedBooksCalled = true
+        }
+        
+        func presentError() {
+            presentErrorCalled = true
+        }
+        
+        // MARK: Method call expectations
+        
+        var presentFetchedBooksCalled = false
+        var presentErrorCalled = false
+    }
+    
+    
+    class BookListWorkerSpy: BookListWorker
+    {
+        // MARK: Method call expectations
+        
+        var fetchBooksCalled = false
+        
+        // MARK: Spied methods
+        
+        override func fetchBooks(request: BookList.FetchBooks.Request, completionHandler: @escaping (Result<BookList.FetchBooks.Response, Error>) -> Void) {
+            fetchBooksCalled = true
+            completionHandler(Result.success(BookList.FetchBooks.Response(kind: "kind", totalItems: 1, items: [Seeds.Books.sampleBook])))
+        }
+    }
+    
+    // MARK: Tests
+    
+    func testFetchBooksShouldAskBookListWorkerToFetchBooks()
+    {
+        // Given
+        let bookListWorkerSpy = BookListWorkerSpy()
+        sut.bookListWorker = bookListWorkerSpy
+        let request = BookList.FetchBooks.Request(queryText: "Swift", startIndex: 0, maxResult: 10)
+        
+        // When
+        sut.fetchBooks(request: request)
+        
+        // Then
+        XCTAssert(bookListWorkerSpy.fetchBooksCalled, "fetchBooks() should ask BookListWorker to fetch books")
+    }
+    
+    func testPresentBooksShouldAskBookListPresenterToFormatResult()
+    {
+        // Given
+        let bookListPresentationLogicSpy = BookListPresentationLogicSpy()
+        sut.presenter = bookListPresentationLogicSpy
+        let response = BookList.FetchBooks.Response(kind: "kind", totalItems: 1, items: [Seeds.Books.sampleBook])
+        
+        // When
+        sut.procResponse(response: response)
+        sut.procResponse(response: nil)
+        
+        // Then
+        XCTAssert(bookListPresentationLogicSpy.presentFetchedBooksCalled, "procResponse() should ask BookListPresentation to display searched Books")
+        XCTAssert(bookListPresentationLogicSpy.presentErrorCalled, "procResponse() should ask BookListPresentation to display Error")
+    }
+    
 }

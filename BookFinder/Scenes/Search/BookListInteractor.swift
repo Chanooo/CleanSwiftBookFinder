@@ -27,7 +27,7 @@ class BookListInteractor: BookListBusinessLogic, BookListDataStore
     var presenter: BookListPresentationLogic?
     
     var bookListWorker = BookListWorker()
-    var books: [Book]?
+    var books: [Book]? = []
     
     // MARK: fetch books
     
@@ -36,16 +36,28 @@ class BookListInteractor: BookListBusinessLogic, BookListDataStore
         bookListWorker.fetchBooks(request: request) { result in
             switch result {
             case .success(let response):
-                DispatchQueue.main.async {
-                    self.books = response.items // store DataStore
-                    self.presenter?.presentFetchedBooks(response: response)
+                // store DataStore
+                if request.startIndex == 0 {
+                    self.books = response.items
+                } else {
+                    self.books! += response.items ?? []
                 }
+                // present Response
+                self.procResponse(response: response)
             case .failure(let error):
-                debugPrint("🆘 \(error)")
-                DispatchQueue.main.async {
-                    self.presenter?.presentError()
-                }
+                printError(error.localizedDescription)
+                self.procResponse(response: nil)
             }
         }
     }
+    
+    func procResponse(response: BookList.FetchBooks.Response?)
+    {
+        if let response = response {
+            self.presenter?.presentFetchedBooks(response: response)
+        } else {
+            self.presenter?.presentError()
+        }
+    }
+    
 }
